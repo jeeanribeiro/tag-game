@@ -15,3 +15,4 @@ npm run start
 - Access it by the IP of the server
 - Chaser is red and others players are blue
 - When chaser tags another player, that player becomes the new chaser
+- There is a delay of 3 seconds before tagging someone else
