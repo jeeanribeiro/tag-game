@@ -8,6 +8,9 @@
     "start": "npm run build && node src/server.js",
     "build": "browserify src/client.js | terser > public/bundle.min.js"
   },
+  "engines": {
+    "node": "12.x"
+  },
   "keywords": [],
   "author": "Jean Ribeiro",
   "license": "MIT",
