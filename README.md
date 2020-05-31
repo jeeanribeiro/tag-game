@@ -1,6 +1,8 @@
 # tag-game
 Tag game made with socket.io
 
+Live demo https://tag-game.herokuapp.com/
+
 ## How to run
 ```
 git clone https://github.com/jeeanribeiro/tag-game
