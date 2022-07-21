@@ -22,7 +22,7 @@
     "lodash": "^4.17.15",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
-    "terser": "^4.7.0"
+    "terser": "^4.8.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
