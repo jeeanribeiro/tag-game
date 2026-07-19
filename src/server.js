@@ -67,7 +67,7 @@ const updateChaser = function() {
     io.emit('newChaser', chaser.id);
   }
 
-  chaser = players.find(player => player.id = chaser.id);
+  chaser = players.find(player => player.id === chaser.id);
   
   players.forEach(player => {
     if (collision(player, chaser)) {
