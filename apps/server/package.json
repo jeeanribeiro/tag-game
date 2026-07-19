@@ -1,0 +1,31 @@
+{
+  "name": "@tag-game/server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Authoritative tag-game server: 60 Hz fixed-timestep simulation, 20 Hz snapshots, rooms with join codes",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsup",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tag-game/shared": "workspace:*",
+    "express": "5.2.1",
+    "socket.io": "4.8.3",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.1",
+    "socket.io-client": "4.8.3",
+    "tsup": "8.5.1",
+    "tsx": "^4.23.1",
+    "typescript": "5.9.3"
+  }
+}

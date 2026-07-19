@@ -1,0 +1,23 @@
+{
+  "name": "@tag-game/web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Canvas client for tag-game: rAF render loop, snapshot interpolation, client-side prediction",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tag-game/shared": "workspace:*",
+    "socket.io-client": "4.8.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3",
+    "vite": "8.1.5"
+  }
+}
