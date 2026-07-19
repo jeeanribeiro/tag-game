@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+
+html,
+body {
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+body {
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@keyframes countdown-pop {
+  0% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  30% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.countdown-pop {
+  animation: countdown-pop 0.35s ease-out;
+}

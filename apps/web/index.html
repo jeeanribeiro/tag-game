@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <title>tag-game — authoritative multiplayer tag</title>
+    <meta
+      name="description"
+      content="Multiplayer tag in the browser: rooms, sprint stamina, 60 Hz authoritative server."
+    />
+    <meta name="theme-color" content="#0a0d13" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="h-full overflow-hidden bg-[#0a0d13] font-sans text-slate-200 select-none">
+    <canvas id="game" class="fixed inset-0 block h-full w-full"></canvas>
+
+    <!-- HUD -->
+    <div id="hud" class="pointer-events-none fixed inset-0 hidden">
+      <div
+        id="timer"
+        class="absolute top-4 left-1/2 -translate-x-1/2 rounded-lg bg-slate-950/60 px-3 py-1 font-mono text-2xl font-bold tracking-widest text-slate-100/90 backdrop-blur"
+      >
+        --:--
+      </div>
+      <div
+        id="scoreboard"
+        class="absolute top-4 left-4 w-56 space-y-1 rounded-xl border border-slate-800/60 bg-slate-950/60 p-3 text-sm backdrop-blur"
+      ></div>
+      <button
+        id="room-code"
+        class="pointer-events-auto absolute top-4 right-4 cursor-pointer rounded-xl border border-slate-800/60 bg-slate-950/60 px-3 py-2 font-mono text-sm tracking-widest text-sky-300 backdrop-blur hover:bg-slate-800/70"
+        title="Copy invite link"
+      ></button>
+      <div
+        id="spectator"
+        class="absolute top-16 left-1/2 hidden -translate-x-1/2 rounded-lg bg-amber-500/15 px-3 py-1.5 text-sm font-medium text-amber-300 backdrop-blur"
+      >
+        Spectating — you join when the next round starts
+      </div>
+      <div id="banner" class="absolute inset-x-0 top-[30%] hidden text-center"></div>
+      <div
+        id="stamina-wrap"
+        class="absolute bottom-6 left-1/2 h-2.5 w-56 -translate-x-1/2 overflow-hidden rounded-full border border-slate-800/80 bg-slate-900/80"
+      >
+        <div id="stamina-bar" class="h-full w-full rounded-full bg-emerald-400"></div>
+      </div>
+      <div
+        id="controls-hint"
+        class="absolute bottom-10 left-1/2 -translate-x-1/2 text-xs text-slate-500"
+      >
+        WASD / arrows to move &middot; hold Shift or Space to sprint
+      </div>
+    </div>
+
+    <!-- Touch controls -->
+    <div
+      id="joy-base"
+      class="pointer-events-none fixed z-10 hidden h-28 w-28 rounded-full border-2 border-slate-500/40 bg-slate-500/10"
+    ></div>
+    <div
+      id="joy-thumb"
+      class="pointer-events-none fixed z-10 hidden h-12 w-12 rounded-full bg-slate-300/50"
+    ></div>
+    <button
+      id="btn-sprint"
+      class="fixed right-6 bottom-8 z-10 hidden h-20 w-20 touch-none rounded-full border-2 border-emerald-400/50 bg-emerald-400/15 text-xs font-bold tracking-wider text-emerald-300 active:bg-emerald-400/40"
+    >
+      SPRINT
+    </button>
+
+    <!-- Podium -->
+    <div
+      id="podium"
+      class="fixed inset-0 z-20 hidden items-center justify-center bg-slate-950/70 backdrop-blur-sm"
+    >
+      <div
+        class="w-[min(92vw,420px)] rounded-2xl border border-slate-800 bg-slate-900/90 p-6 text-center shadow-2xl"
+      >
+        <h2 class="text-2xl font-black tracking-tight text-slate-50">Round over</h2>
+        <ol id="podium-list" class="mt-4 space-y-2 text-left"></ol>
+        <p id="podium-note" class="mt-4 text-sm text-slate-400"></p>
+      </div>
+    </div>
+
+    <!-- Menu -->
+    <div id="menu" class="fixed inset-0 z-30 flex items-center justify-center bg-[#0a0d13]">
+      <div
+        class="w-[min(92vw,400px)] rounded-2xl border border-slate-800 bg-slate-900/80 p-6 shadow-2xl"
+      >
+        <h1 class="text-3xl font-black tracking-tight text-slate-50">
+          tag<span class="text-sky-400">-game</span>
+        </h1>
+        <p class="mt-1 text-sm text-slate-400">
+          Multiplayer tag with an authoritative server. Don't be
+          <span class="font-semibold text-rose-400">it</span> — every second you stay free scores.
+        </p>
+        <label
+          for="nickname"
+          class="mt-5 block text-xs font-semibold tracking-wider text-slate-400 uppercase"
+        >
+          Nickname
+        </label>
+        <input
+          id="nickname"
+          maxlength="16"
+          autocomplete="off"
+          placeholder="e.g. Ada"
+          class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100 outline-none focus:border-sky-500"
+        />
+        <button
+          id="btn-create"
+          class="mt-4 w-full cursor-pointer rounded-lg bg-sky-500 px-4 py-2.5 font-semibold text-slate-950 hover:bg-sky-400 disabled:opacity-50"
+        >
+          Create room
+        </button>
+        <div class="my-4 flex items-center gap-3 text-xs text-slate-500">
+          <span class="h-px flex-1 bg-slate-800"></span>
+          or join with a code
+          <span class="h-px flex-1 bg-slate-800"></span>
+        </div>
+        <div class="flex gap-2">
+          <input
+            id="code"
+            maxlength="4"
+            autocomplete="off"
+            placeholder="CODE"
+            class="w-28 rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-center font-mono tracking-widest text-slate-100 uppercase outline-none focus:border-sky-500"
+          />
+          <button
+            id="btn-join"
+            class="flex-1 cursor-pointer rounded-lg border border-sky-500/60 px-4 py-2 font-semibold text-sky-300 hover:bg-sky-500/10 disabled:opacity-50"
+          >
+            Join room
+          </button>
+        </div>
+        <p id="menu-error" class="mt-3 hidden text-sm text-rose-400"></p>
+        <p class="mt-5 text-xs text-slate-500">
+          Move with WASD, arrows or the touch joystick. Sprint burns stamina — the server enforces
+          it, so nobody outruns physics.
+        </p>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
