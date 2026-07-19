@@ -13,6 +13,7 @@
   "scripts": {
     "dev": "pnpm --parallel --filter @tag-game/server --filter @tag-game/web dev",
     "build": "pnpm -r build",
+    "start": "node apps/server/dist/index.js",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

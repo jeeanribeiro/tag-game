@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url';
 import { createGameServer } from './server';
 
-const port = Number(process.env.PORT ?? 43150);
+const port = Number(process.env.PORT ?? 3000);
 const webDistPath =
   process.env.WEB_DIST ?? fileURLToPath(new URL('../../web/dist', import.meta.url));
 
