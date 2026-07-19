@@ -9,6 +9,10 @@ window.onload = function() {
 
   socket.on('connect', function() {
 
+    socket.on('updatePlayers', function(players) {
+      playersArray = players;
+    })
+
     var thisPlayer = {
       id: socket.id,
       x: 640,
@@ -80,9 +84,6 @@ window.onload = function() {
       socket.emit('updatePlayer', thisPlayer);
 
       ctx.clearRect(0,0, 1280, 720);
-      socket.on('updatePlayers', function(players) {
-        playersArray = players;
-      })
 
       playersArray.forEach(function(player) {
         if (player.id === chaserId) {
