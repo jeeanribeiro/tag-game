@@ -87,9 +87,9 @@ window.onload = function() {
 
       playersArray.forEach(function(player) {
         if (player.id === chaserId) {
-          drawRect(true, player.x, player.y, player.height, player.width);
+          drawRect(true, player.x, player.y, player.width, player.height);
         } else {
-          drawRect(false, player.x, player.y, player.height, player.width);
+          drawRect(false, player.x, player.y, player.width, player.height);
         }
       })
 
