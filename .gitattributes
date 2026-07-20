@@ -1,0 +1,9 @@
+# Force LF in every checkout so Prettier's format check passes regardless of
+# the contributor's core.autocrlf setting (notably Git for Windows defaults).
+* text=auto eol=lf
+
+*.png binary
+*.ico binary
+*.jpg binary
+*.gif binary
+*.woff2 binary
